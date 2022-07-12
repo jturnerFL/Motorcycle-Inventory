@@ -1,3 +1,4 @@
+from turtle import color
 from flask_sqlalchemy import SQLAlchemy
 from flask_migrate import Migrate
 import uuid
@@ -18,7 +19,7 @@ db = SQLAlchemy()
 def load_user(user_id):
     return User.query.get(user_id)
 
-class User(db.model, UserMixin):
+class User(db.Model, UserMixin):
     id = db.Column(db.String, primary_key = True)
     first_name = db.Column(db.String(150), nullable=True, default='')
     last_name = db.Column(db.String(150), nullable=True, default='')
@@ -50,32 +51,19 @@ class User(db.model, UserMixin):
     def __repr__(self):
         return f'User {self.email} has been added to the database'
 
-class Contact(db.Model):
+class Inventory(db.Model):
     id = db.Column(db.String, primary_key = True)
     name = db.Column(db.String(150), nullable = False)
-    email = db.Column(db.String(200))
-    phone_number = db.Column(db.String(20))
-    address = db.Column(db.String(200))
+    color = db.Column(db.String(20))
     user_token = db.Column(db.String, db.ForeignKey('user.token'), nullable = False)
 
-    def __init__(self,name,email,phone_number,address,user_token, id = ''):
+    def __init__(self, name, color, cost):
         self.id = self.set_id()
         self.name = name
-        self.email = email
-        self.phone_number = phone_number
-        self.address = address
-        self.user_token = user_token
-
+        self.color = color
+        self.cost = cost 
 
     def __repr__(self):
-        return f'The following contact has been added: {self.name}'
+        return f'The following Bike has been added: {self.name}'
 
-    def set_id(self):
-        return (secrets.token_urlsafe())
 
-class ContactSchema(ma.Schema):
-    class Meta:
-        fields = ['id', 'name','email','phone_number', 'address']
-
-contact_schema = ContactSchema()
-contacts_schema = ContactSchema(many=True)
