@@ -50,14 +50,32 @@ class User(db.model, UserMixin):
     def __repr__(self):
         return f'User {self.email} has been added to the database'
 
-class MotorcycleCollection(db.Model):
-    id = db.Column(db.String, primary_key=True)
-    year = db.Column(db.String(5))
-    model = db.Column(db.String(150), nullable=False)
-    price = db.Column(db.String(200))
+class Contact(db.Model):
+    id = db.Column(db.String, primary_key = True)
+    name = db.Column(db.String(150), nullable = False)
+    email = db.Column(db.String(200))
+    phone_number = db.Column(db.String(20))
+    address = db.Column(db.String(200))
+    user_token = db.Column(db.String, db.ForeignKey('user.token'), nullable = False)
 
-    def __init__(self, year, model, price):
-        self.year = year
-        self.model = model
-        self.price = price
+    def __init__(self,name,email,phone_number,address,user_token, id = ''):
+        self.id = self.set_id()
+        self.name = name
+        self.email = email
+        self.phone_number = phone_number
+        self.address = address
+        self.user_token = user_token
 
+
+    def __repr__(self):
+        return f'The following contact has been added: {self.name}'
+
+    def set_id(self):
+        return (secrets.token_urlsafe())
+
+class ContactSchema(ma.Schema):
+    class Meta:
+        fields = ['id', 'name','email','phone_number', 'address']
+
+contact_schema = ContactSchema()
+contacts_schema = ContactSchema(many=True)
