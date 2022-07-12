@@ -1,0 +1,9 @@
+*,*:before,*::after{
+    padding:0;
+    margin0;
+    box-sizing: inherit;
+}
+
+body {
+    padding-top: 50px;
+}
