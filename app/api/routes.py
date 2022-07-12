@@ -1,5 +1,10 @@
-from flask import Blueprint, request, jsonify, render_temmplate
+from flask import Blueprint, request, jsonify
 from helpers import token_required
-from models import db, User, Contact, contact_schema, contacts_schema
+from models import db, User
 
 api = Blueprint('api', __name__, url_prefix='/api')
+
+@api.route('/data')
+def viewdata():
+    return {'some': 'value'}
+
