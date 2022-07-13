@@ -24,7 +24,7 @@ def signup():
             flash(f'You have successfully created a user account {email}', 'User-created')
             return redirect(url_for('site.home'))
     except:
-        raise Exception('Invalid from data: Please check your entry')
+        raise Exception('Invalid form data: Please check your entry')
     return render_template('sign_up', form=form)
 
 @auth.route('/signin', methods = ['GET', 'POST'])
@@ -40,12 +40,12 @@ def signin():
             logged_user = User.query.filter(User.email == email).first()
             if logged_user and check_password_hash(logged_user.password, password):
                 login_user(logged_user)
-                flash(f'Welcome to Our Inventory' 'auth-success')
+                flash(f'Welcome to your account' 'auth-success')
                 return redirect(url_for('site.profile'))
             else:
                 flash(f'Your login attempt failed', 'auth-failed')
     except:
-        raise Exception('Invalid form data: Check your form')
+        raise Exception('Invalid Form Data: Check your form')
     return render_template('sign_in.html', form=form)
 
 @auth.route('/logout')

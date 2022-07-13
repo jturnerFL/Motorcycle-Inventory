@@ -1,4 +1,4 @@
-from turtle import color
+from turtle import color, window_height
 from flask_sqlalchemy import SQLAlchemy
 from flask_migrate import Migrate
 import uuid
@@ -51,19 +51,39 @@ class User(db.Model, UserMixin):
     def __repr__(self):
         return f'User {self.email} has been added to the database'
 
-class bike(db.Model):
+class Bike(db.Model):
     id = db.Column(db.String, primary_key = True)
     name = db.Column(db.String(150), nullable = False)
-    color = db.Column(db.String(20))
+    description = db.Column(db.String(20))
+    price = db.Column(db.Numeric(precision=10,scale=2))
+    max_speed = db.Column(db.String(100))
+    weight = db.Column(db.String(50))
+    cost = db.Column(db.Numeric(precision=10, scale=2))
     user_token = db.Column(db.String, db.ForeignKey('user.token'), nullable = False)
 
-    def __init__(self, name, color, cost):
+    def __init__(self, name, description, price, max_speed, weight, cost, user_token):
         self.id = self.set_id()
         self.name = name
-        self.color = color
-        self.cost = cost 
+        self.description = description
+        self.price = price
+        self.max_speed = max_speed
+        self.weight = weight 
+        self.cost = cost
+        self.user_token = user_token 
 
     def __repr__(self):
         return f'The following Bike has been added: {self.name}'
+
+    def set_id(self):
+        return (secrets.token_urlsafe)
+
+# Creation of API Schema 
+class BikeSchema(ma.Schema):
+    class Meta:
+        fields = ['id', 'name','description', 'price', 'camera_quality', 'flight_time', 'max_speed', 'dimensions', 'weight', 'cost_of_prod', 'series']
+
+
+bike_schema = BikeSchema()
+bikes_schema = BikeSchema(many = True)
 
 
