@@ -6,9 +6,9 @@ from flask_login import login_user, logout_user, LoginManager, current_user, log
 
 auth = Blueprint('auth', __name__, template_folder = 'auth_templates')
 
-@auth.route('/signup', methods = ['GET', 'POST'])
-def signup():
-    form = UserLoginForm
+@auth.route('/sign_up', methods = ['GET', 'POST'])
+def sign_up():
+    form = UserLoginForm()
 
     try:
         if request.method == 'POST' and form.validate_on_submit():
@@ -22,13 +22,13 @@ def signup():
             db.session.commit()
 
             flash(f'You have successfully created a user account {email}', 'User-created')
-            return redirect(url_for('site.home'))
+            return redirect(url_for('auth.sign_in'))
     except:
         raise Exception('Invalid form data: Please check your entry')
     return render_template('sign_up', form=form)
 
-@auth.route('/signin', methods = ['GET', 'POST'])
-def signin():
+@auth.route('/sign_in', methods = ['GET', 'POST'])
+def sign_in():
     form = UserLoginForm()
 
     try:
@@ -44,6 +44,8 @@ def signin():
                 return redirect(url_for('site.profile'))
             else:
                 flash(f'Your login attempt failed', 'auth-failed')
+                return redirect(url_for('auth.sign_in'))
+
     except:
         raise Exception('Invalid Form Data: Check your form')
     return render_template('sign_in.html', form=form)
