@@ -1,6 +1,6 @@
 from flask import Blueprint, request, jsonify
 from helpers import token_required
-from models import db, User
+from models import db, User, bike
 
 api = Blueprint('api', __name__, url_prefix='/api')
 
