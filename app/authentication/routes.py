@@ -22,10 +22,10 @@ def sign_up():
             db.session.commit()
 
             flash(f'You have successfully created a user account {email}', 'User-created')
-            return redirect(url_for('auth.sign_in'))
+            return redirect(url_for('site.home'))
     except:
         raise Exception('Invalid form data: Please check your entry')
-    return render_template('sign_up', form=form)
+    return render_template('sign_up.html', form=form)
 
 @auth.route('/sign_in', methods = ['GET', 'POST'])
 def sign_in():
